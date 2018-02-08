@@ -7,6 +7,7 @@ class LanguageManager
 	attr_accessor :sheet
 
 	def initialize
+		# add correct localization for you .xlsx file
 		@sheet = Roo::Spreadsheet.open('./LanguageSet.xlsx')
     end
 
