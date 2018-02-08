@@ -6,5 +6,6 @@ Because for english learning purposes most of the times I create .xlsx file with
 
 
 ## TODO
+- [x] fix crash related with 'nil' occurrence in 'sheet'
 - [] code cleanup (e.g. add access modifiers for methods)
 - [] display number of answered correctly and incorrectly words

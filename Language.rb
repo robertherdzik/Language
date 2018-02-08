@@ -13,19 +13,40 @@ class LanguageManager
 	def getRandomRowNumberFromAllAvailableRows
 		rowNumber = Random.rand(@sheet.last_row)
 
+		# try to get the `line number` that meets the validation process
+		if validateValuesFromSheet(rowNumber) == false
+			rowNumber = getRandomRowNumberFromAllAvailableRows
+		end
+
 		return rowNumber
 	end
 
-	def getForeignWordForIndex(index) 		
-		rawWord = @sheet.cell(index, 1)
+	# method check whether values are not `nil`
+	def validateValuesFromSheet(rowNumber) 
+		foreginWord = getRawValueFromSheet(rowNumber, 1) # todo: remove duplication
+		translatedWord = getRawValueFromSheet(rowNumber, 2)
+
+		if foreginWord != nil && translatedWord != nil 
+			return true
+		else 
+			return false
+		end 
+	end
+
+	def getForeignWordForRow(row) 		
+		rawWord = getRawValueFromSheet(row, 1)
 
 		return rawWord.downcase
 	end
 
-	def getTranslatedWordForIndex(index) 
-		rawWord = @sheet.cell(index, 2)
+	def getTranslatedWordForRow(row) 
+		rawWord = getRawValueFromSheet(row, 2)
 
 		return rawWord.downcase
+	end
+
+	def getRawValueFromSheet(row, column) 
+		return @sheet.cell(row, column)
 	end
 
 end
@@ -67,7 +88,7 @@ class LanguageResutlValidator
 
 	def printFailure(expectedWord)
 		pritnTopSeparator
-		puts '❌' + ' :' + expectedWord
+		puts '❌' + ' CORRECT ANSWER: ' + '>> ' + expectedWord + ' <<'
 		printBottomSeparator
 	end
 
@@ -90,11 +111,11 @@ resultValidator = LanguageResutlValidator.new
 # train your language until you feel tired 😇
 loop do 
 	rowNumber = manager.getRandomRowNumberFromAllAvailableRows
-	puts manager.getForeignWordForIndex(rowNumber)
+	puts manager.getForeignWordForRow(rowNumber)
 
 	# get user input answer
 	userInputWord = gets.chomp
-	expectedWord = manager.getTranslatedWordForIndex(rowNumber)
+	expectedWord = manager.getTranslatedWordForRow(rowNumber)
 
 	# validate answer
 	resultValidator.validate(expectedWord, userInputWord)
