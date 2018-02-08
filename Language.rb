@@ -66,8 +66,12 @@ class LanguageResutlValidator
 		if expectedWord == userInputWord 
 			printSuccess
 			$correctAttempts += 1
+
+			return true
 		 else
 		 	printFailure(expectedWord)
+
+		 	return false
 		end
 
 		$allAttempts += 1
@@ -106,11 +110,23 @@ end
 # ------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------
 
+def setupInterfaceAccordingToValidationResult(validationResult) 
+	if validationResult == true 
+		sleep 1
+		puts `clear`
+	else 
+		puts 'PRESS ANY KEY TO CONTINUE 🏁'
+		gets.chomp
+		puts `clear`
+	end
+end 
+
 manager = LanguageManager.new
 resultValidator = LanguageResutlValidator.new
 
 # train your language until you feel tired 😇
 loop do 
+
 	rowNumber = manager.getRandomRowNumberFromAllAvailableRows
 	puts manager.getForeignWordForRow(rowNumber)
 
@@ -119,8 +135,9 @@ loop do
 	expectedWord = manager.getTranslatedWordForRow(rowNumber)
 
 	# validate answer
-	resultValidator.validate(expectedWord, userInputWord)
-  
+	validationResult = resultValidator.validate(expectedWord, userInputWord)
+  	setupInterfaceAccordingToValidationResult(validationResult)
+	
   break if false
 end 
 
