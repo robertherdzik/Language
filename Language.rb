@@ -27,11 +27,12 @@ class LanguageManager
 		foreginWord = getRawValueFromSheet(rowNumber, 1) # todo: remove duplication
 		translatedWord = getRawValueFromSheet(rowNumber, 2)
 
+        validationResult = false
 		if foreginWord != nil && translatedWord != nil 
-			return true
-		else 
-			return false
-		end 
+			validationResult = true
+		end
+        
+        return validationResult
 	end
 
 	def getForeignWordForRow(row) 		
